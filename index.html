@@ -589,15 +589,20 @@ document.getElementById("rsvpForm").addEventListener("submit", function(e){
   const message=document.getElementById("guestMessage").value.trim();
   const guestCountLabel = attendance === "Hadir" ? count + " orang" : "Tidak hadir";
 
-  const text =
-    "Assalamu’alaikum, saya ingin mengonfirmasi kehadiran di Walimatul 'Urs Zaka & Saroh.%0A%0A" +
-    "Nama Tamu: " + encodeURIComponent(name) + "%0A" +
-    "Nomor WhatsApp: " + encodeURIComponent(phone) + "%0A" +
-    "Status: " + encodeURIComponent(attendance) + "%0A" +
-    "Jumlah Tamu: " + encodeURIComponent(guestCountLabel) +
-    (message ? "%0AUcapan: " + encodeURIComponent(message) : "");
+  const statusLabel = attendance === "Hadir"
+    ? "InsyaAllah, saya akan hadir"
+    : "Mohon maaf, saya tidak dapat hadir";
 
-  window.open("https://wa.me/6283830337100?text=" + text, "_blank");
+  const text =
+    "💍 KONFIRMASI KEHADIRAN\n" +
+    "The Wedding of Zaka & Saroh\n\n" +
+    "Nama: " + name + "\n" +
+    "No. WhatsApp: " + phone + "\n" +
+    "Status: " + statusLabel + "\n" +
+    "Jumlah tamu: " + guestCountLabel + "\n" +
+    "Ucapan: " + (message || "-");
+
+  window.open("https://wa.me/6283830337100?text=" + encodeURIComponent(text), "_blank");
 });
 
 function openGift(type){
