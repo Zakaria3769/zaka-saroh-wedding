@@ -424,8 +424,8 @@ body.opening-leave .cover-backdrop{animation:backdropExit .55s ease both}
       <label>Status Kehadiran
         <select id="attendance" required>
           <option value="" selected disabled>Pilih status kehadiran</option>
-          <option value="Hadir">✅InsyaAllah, saya akan hadir</option>
-          <option value="Tidak dapat hadir">❌Mohon maaf, saya tidak dapat hadir</option>
+          <option value="Hadir">&#x2705;InsyaAllah, saya akan hadir</option>
+          <option value="Tidak dapat hadir">&#x274C;Mohon maaf, saya tidak dapat hadir</option>
         </select>
       </label>
 
@@ -588,9 +588,9 @@ document.getElementById("rsvpForm").addEventListener("submit", function(e){
   const count=document.getElementById("guestCount").value;
   const message=document.getElementById("guestMessage").value.trim();
   const guestCountLabel = attendance === "Hadir" ? count + " orang" : "Tidak hadir";
-  const statusLabel = attendance === "Hadir" ? "✅ Hadir" : "❌ Tidak dapat hadir";
+  const statusLabel = attendance === "Hadir" ? "Hadir" : "Tidak dapat hadir";
   const text =
-    "💍 KONFIRMASI KEHADIRAN\n" +
+    ((attendance === "Hadir" ? "\u2705" : "\u274C") + " KONFIRMASI KEHADIRAN\n") +
     "The Wedding of Zaka & Saroh\n\n" +
     "Nama: " + name + "\n" +
     "No. WhatsApp: " + phone + "\n" +
