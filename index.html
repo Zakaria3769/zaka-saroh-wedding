@@ -166,8 +166,8 @@ section{padding:80px 20px}.container{max-width:900px;margin:auto;text-align:cent
       <label>Status Kehadiran
         <select id="attendance" required>
           <option value="" selected disabled>Pilih status kehadiran</option>
-          <option value="Hadir">&#x2705; InsyaAllah, saya akan hadir</option>
-          <option value="Tidak dapat hadir">&#x274C; Mohon maaf, saya tidak dapat hadir</option>
+          <option value="Hadir">InsyaAllah, saya akan hadir</option>
+          <option value="Tidak dapat hadir">Mohon maaf, saya tidak dapat hadir</option>
         </select>
       </label>
 
@@ -273,24 +273,20 @@ document.getElementById("rsvpForm").addEventListener("submit", function(e){
   const count=document.getElementById("guestCount").value;
   const message=document.getElementById("guestMessage").value.trim();
 
-  const statusText = attendance === "Hadir"
-    ? "\u2705 Hadir"
-    : "\u274C Tidak dapat hadir";
-
-  const countText = attendance === "Hadir"
-    ? count + " orang"
-    : "Tidak hadir";
+  const attendanceLabel = document.getElementById("attendance").selectedOptions[0].text
+    .replace(/^✅\s*/, "")
+    .replace(/^❌\s*/, "");
 
   const text =
-    (attendance === "Hadir" ? "\u2705 KONFIRMASI KEHADIRAN" : "\u274C KONFIRMASI KEHADIRAN") + "\n" +
-    "The Wedding of Zaka & Saroh\n\n" +
-    "Nama: " + name + "\n" +
-    "No. WhatsApp: " + phone + "\n" +
-    "Status: " + statusText + "\n" +
-    "Jumlah tamu: " + countText +
-    (message ? "\nUcapan: " + message : "");
+    "KONFIRMASI KEHADIRAN%0A" +
+    "The Wedding of Zaka & Saroh%0A%0A" +
+    "Nama: " + encodeURIComponent(name) + "%0A" +
+    "No. WhatsApp: " + encodeURIComponent(phone) + "%0A" +
+    "Status: " + encodeURIComponent(attendanceLabel) + "%0A" +
+    "Jumlah tamu: " + encodeURIComponent(count) +
+    (message ? "%0AUcapan: " + encodeURIComponent(message) : "");
 
-  window.open("https://wa.me/6283830337100?text=" + encodeURIComponent(text), "_blank");
+  window.open("https://wa.me/6283830337100?text=" + text, "_blank");
 });
 
 function openGift(type){
