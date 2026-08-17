@@ -588,19 +588,15 @@ document.getElementById("rsvpForm").addEventListener("submit", function(e){
   const count=document.getElementById("guestCount").value;
   const message=document.getElementById("guestMessage").value.trim();
   const guestCountLabel = attendance === "Hadir" ? count + " orang" : "Tidak hadir";
-
-  const statusLabel = attendance === "Hadir"
-    ? "InsyaAllah, saya akan hadir"
-    : "Mohon maaf, saya tidak dapat hadir";
-
+  const statusLabel = attendance === "Hadir" ? "✅ Hadir" : "❌ Tidak dapat hadir";
   const text =
     "💍 KONFIRMASI KEHADIRAN\n" +
     "The Wedding of Zaka & Saroh\n\n" +
     "Nama: " + name + "\n" +
     "No. WhatsApp: " + phone + "\n" +
     "Status: " + statusLabel + "\n" +
-    "Jumlah tamu: " + guestCountLabel + "\n" +
-    "Ucapan: " + (message || "-");
+    "Jumlah tamu: " + guestCountLabel +
+    (message ? "\nUcapan: " + message : "");
 
   window.open("https://wa.me/6283830337100?text=" + encodeURIComponent(text), "_blank");
 });
