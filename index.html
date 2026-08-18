@@ -299,9 +299,33 @@ body.opening-leave .cover-backdrop{animation:backdropExit .55s ease both}
   *,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}
 }
 
+
+/* Floating music control */
+.music-control{
+  position:fixed;right:18px;bottom:18px;z-index:9998;
+  width:48px;height:48px;border:1px solid rgba(241,220,168,.75);
+  border-radius:50%;background:linear-gradient(145deg,#2a173deF,#4b2f61eF);
+  color:var(--gold2);display:grid;place-items:center;cursor:pointer;
+  box-shadow:0 10px 30px #160a2080,inset 0 1px #fff4;
+  transition:transform .3s ease,box-shadow .3s ease,background .3s ease,opacity .3s ease;
+  backdrop-filter:blur(8px);
+  opacity:0;pointer-events:none;
+}
+.music-control.ready{opacity:1;pointer-events:auto}
+.music-control:hover{transform:translateY(-3px) scale(1.04);box-shadow:0 14px 35px #160a2099,inset 0 1px #fff5}
+.music-control:active{transform:scale(.96)}
+.music-control .music-icon{font-size:20px;line-height:1}
+.music-control.is-playing{animation:musicPulse 2.2s ease-in-out infinite}
+@keyframes musicPulse{0%,100%{box-shadow:0 10px 30px #160a2080,inset 0 1px #fff4}50%{box-shadow:0 12px 38px #d8b56d44,inset 0 1px #fff6}}
+@media(max-width:650px){.music-control{right:14px;bottom:14px;width:44px;height:44px}.music-control .music-icon{font-size:18px}}
+
 </style>
 </head>
 <body>
+<audio id="bgMusic" src="Mabrouk.mp3" preload="auto" loop></audio>
+<button class="music-control" id="musicControl" type="button" aria-label="Putar musik" aria-pressed="false" title="Putar musik">
+  <span class="music-icon" aria-hidden="true">♫</span>
+</button>
 <div class="opening-veil" aria-hidden="true">
   <div class="veil-glow"></div>
   <div class="veil-mark">۞</div>
@@ -545,6 +569,8 @@ const coverBtn=document.querySelector(".cover-btn");
 if(coverBtn){
   coverBtn.addEventListener("click",function(e){
     e.preventDefault();
+    startMusic();
+    musicControl.classList.add("ready");
     document.body.classList.add("opening-leave");
     setTimeout(function(){
       document.getElementById("undangan").scrollIntoView({behavior:"smooth",block:"start"});
@@ -624,6 +650,28 @@ function copyAccount(number,button){
     setTimeout(function(){button.textContent=old;},2200);
   });
 }
+
+
+// Background music: starts after the user's explicit "Buka Undangan" interaction.
+const bgMusic=document.getElementById("bgMusic");
+const musicControl=document.getElementById("musicControl");
+function updateMusicControl(playing){
+  musicControl.classList.add("ready");
+  musicControl.classList.toggle("is-playing",playing);
+  musicControl.setAttribute("aria-pressed",playing ? "true" : "false");
+  musicControl.setAttribute("aria-label",playing ? "Jeda musik" : "Putar musik");
+  musicControl.setAttribute("title",playing ? "Jeda musik" : "Putar musik");
+  musicControl.querySelector(".music-icon").textContent=playing ? "♫" : "♪";
+}
+function startMusic(){
+  bgMusic.play().then(function(){updateMusicControl(true);}).catch(function(){updateMusicControl(false);});
+}
+musicControl.addEventListener("click",function(){
+  if(bgMusic.paused){startMusic();}
+  else{bgMusic.pause();updateMusicControl(false);}
+});
+bgMusic.addEventListener("play",function(){updateMusicControl(true);});
+bgMusic.addEventListener("pause",function(){updateMusicControl(false);});
 
 </script>
 </body>
